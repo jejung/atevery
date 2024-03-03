@@ -1,14 +1,18 @@
 [tool.poetry]
 name = "atevery"
-version = "0.1.0"
+version = "0.1.1"
 description = "A periodic task scheduler for asyncio processes."
 authors = ["Jean Jung <jean.jung@rocketmail.com>"]
 readme = "README.md"
 license = "MIT"
 homepage = "https://github.com/jejung/atevery"
+classifiers = [
+    "Topic :: Software Development :: Libraries",
+    "Framework :: AsyncIO",
+]
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = "^3.8"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.0.2"
@@ -19,7 +23,7 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 tool.poetry.packages = [
-    { include="" }
+    { include="atevery", from="src" }
 ]
 
 [tool.pytest.ini_options]
