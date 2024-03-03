@@ -1,9 +1,9 @@
-name: Python package
+name: Tests
 
 on:
   push:
     branches: [ "main" ]
-    tags: [ "*.*.*" ]
+    tags: [ "*" ]
   pull_request:
     branches: [ "main" ]
 
@@ -29,10 +29,3 @@ jobs:
         poetry install --with dev
     - name: Tests
       run: pytest --durations 5 -v
-    - name: Build package
-      run: poetry build
-    - name: Publish package
-      if: startsWith(github.ref, 'refs/tags/v')
-      run: |
-        poetry config pypi-token.pypi "${{ secrets.PYPI_API_TOKEN }}"
-        poetry publish
