@@ -1,11 +1,11 @@
 import asyncio
-import logging
 import time
 from datetime import timedelta
 from typing import Dict, List
 
 import pytest
 
+import atevery
 from atevery import every, start_background_tasks, stop_background_tasks
 
 RAN_TASKS: Dict[str, List[float]] = {}
@@ -23,7 +23,6 @@ def register_running(task_name):
 
 def assert_max_diff(times: List[float], expected_diff: float) -> None:
     for a, b in zip(times, times[1:]):
-        logging.getLogger('test').critical(f"{a} - {b}")
         assert abs(int(a - b)) <= expected_diff, \
             f'Failed asserting diff between ({a} - {b}) {a - b} <= {expected_diff}'
 
@@ -84,3 +83,9 @@ def test_minimum_resolution():
         @every(timedelta(milliseconds=49))
         def test():
             pass
+
+
+async def test_shutdown_gracefully_when_all_tasks_are_done():
+    await start_background_tasks()
+    atevery.RUNNING_FUTURES.clear()
+    await stop_background_tasks()

@@ -76,7 +76,13 @@ async def stop_background_tasks(wait_for: bool = True, timeout: Optional[timedel
     if wait_for:
         for future in RUNNING_FUTURES:
             future.cancel()
-        await asyncio.wait(RUNNING_FUTURES, timeout=timeout.total_seconds() if timeout else None)
+        try:
+            await asyncio.wait(RUNNING_FUTURES, timeout=timeout.total_seconds() if timeout else None)
+        except ValueError as e:
+            # in some rare race conditions, it might be possible that the futures are removed from RUNNING_FUTURES
+            # before we jump into waiting them, causing a ValueError.
+            if e.args[0] not in {'Set of Tasks/Futures is empty.', 'Set of coroutines/Futures is empty.'}:
+                raise e
 
 
 __all__ = ['every', 'start_background_tasks', 'stop_background_tasks']
