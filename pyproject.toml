@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "atevery"
-version = "0.1.1"
+version = "0.1.2"
 description = "A periodic task scheduler for asyncio processes."
 authors = ["Jean Jung <jean.jung@rocketmail.com>"]
 readme = "README.md"
